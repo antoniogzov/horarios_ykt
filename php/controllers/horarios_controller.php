@@ -1,0 +1,64 @@
+<?php
+include_once dirname(__DIR__ . '', 1) . "/models/petitions.php";
+
+session_start();
+date_default_timezone_set('America/Mexico_City');
+
+if (!empty($_POST['mod'])) {
+    $function = $_POST['mod'];
+    $function();
+}
+
+
+function getStudentsActiveByFamily()
+{
+    $id_family = $_POST['id_family'];
+
+    $queries = new Queries;
+
+    $stmt = "SELECT std.*
+    FROM school_control_ykt.students  AS std
+    WHERE std.id_family = $id_family AND std.status = '1'
+    ORDER BY name ASC";
+
+    $getInfoRequest = $queries->getData($stmt);
+    //$last_id = $getInfoRequest['last_id'];
+    if (!empty($getInfoRequest)) {
+
+        for ($s = 0; $s < count($getInfoRequest); $s++) {
+            $student_schendules = array();
+
+            $student_code = $getInfoRequest[$s]->student_code;
+
+            for ($d = 1; $d <= 7; $d++) {
+
+                $sql_search_student_schendule = "SELECT * FROM transport.service_schedules
+            WHERE student_code = '$student_code' AND id_day = '$d'";
+                $getSSchendule =  $queries->getData($sql_search_student_schendule);
+                if (!empty($getSSchendule)) {
+                    $student_schendules[] = $getSSchendule[0];
+                }else{
+                    $student_schendules[] = [];
+                }
+
+                $getInfoRequest[$s]->schedule_student = $student_schendules;
+
+            }
+        }
+        //--- --- ---//
+        $data = array(
+            'response' => true,
+            'data'                => $getInfoRequest
+        );
+        //--- --- ---//
+    } else {
+        //--- --- ---//
+        $data = array(
+            'response' => false,
+            'message'                => ''
+        );
+        //--- --- ---//
+    }
+
+    echo json_encode($data);
+}
