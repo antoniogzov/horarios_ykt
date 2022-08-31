@@ -7,7 +7,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <h3>FAMILIA: ABADI ELIA</h3>
+                <h3 id="family_name"></h3>
+                <h6 id="address_family"></h4>
                 <div class="table-responsive" id="accordionHijosActivos">>
 
                 </div>
