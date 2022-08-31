@@ -13,7 +13,6 @@ $(document).ready(function () {
       .done(function (data) {
         Swal.close();
         var data = JSON.parse(data);
-        console.log(data);
 
         if (data.response == true) {
           var html = "";
@@ -44,31 +43,43 @@ $(document).ready(function () {
 
             for (let h = 0; h < data.data[s].schedule_student.length; h++) {
               var id_day = h + 1;
-              if (data.data[s].schedule_student[h].schedule != undefined) {
-                console.log(data.data[s].schedule_student[h].schedule);
+              if (id_day != 6) {
+                if (data.data[s].schedule_student[h].schedule != undefined) {
+                  schendule_ar =
+                    data.data[s].schedule_student[h].schedule.split(":");
+                  schendule = schendule_ar[0] + ":" + schendule_ar[1];
+
+                  html +=
+                    '<td class="td-edit-day-schendule" id="td-schendule_day' +
+                    id_day +
+                    "_student" +
+                    id_student +
+                    '" data-id-day="' +
+                    id_day +
+                    '" data-id-student="' +
+                    data.data[s].id_student +
+                    '" data-student-code="' +
+                    data.data[s].student_code +
+                    '" contenteditable="true">' +
+                    schendule +
+                    "</td>";
+                } else {
+                  html +=
+                    '<td class="td-edit-day-schendule" id="td-schendule_day' +
+                    id_day +
+                    "_student" +
+                    id_student +
+                    '" data-id-day="' +
+                    id_day +
+                    '" data-id-student="' +
+                    data.data[s].id_student +
+                    '" data-student-code="' +
+                    data.data[s].student_code +
+                    '" contenteditable="true"></td>';
+                }
+              }else{
                 html +=
-                  '<td class="td-edit-day-schendule" id="td-schendule_day' +
-                  id_day +
-                  "_student" +
-                  id_student +
-                  '" data-id-day="' +
-                  id_day +
-                  '" data-id-student="' +
-                  data.data[s].id_student +
-                  '" contenteditable="true">' +
-                  data.data[s].schedule_student[h].schedule +
-                  "</td>";
-              } else {
-                html +=
-                  '<td class="td-edit-day-schendule" id="td-schendule_day' +
-                  id_day +
-                  "_student" +
-                  id_student +
-                  '" data-id-day="' +
-                  id_day +
-                  '" data-id-student="' +
-                  data.data[s].id_student +
-                  '" contenteditable="true"></td>';
+                    '<td class="td-edit-day-schendule" style="background-color: rgba(87, 87, 87,0.3)">N/A</td>';
               }
             }
             html += "</tr>";
@@ -118,17 +129,19 @@ $(document).ready(function () {
   });
 
   $(document).on("focusin", ".td-edit-day-schendule", function () {
-    console.log("td-editable");
     var hora = $(this).text();
     var id_student = $(this).attr("data-id-student");
     var id_day = $(this).attr("data-id-day");
-    console.log(hora.length);
+    var student_code = $(this).attr("data-student-code");
+
     if (hora.length > 1 || hora.length == 0) {
       $(this).html(
         ' <input type="time" class="time_day" data-id_day="' +
           id_day +
           '" data-id-student="' +
           id_student +
+          '" data-student-code="' +
+          student_code +
           '" id="time_day' +
           id_day +
           "_student" +
@@ -138,9 +151,7 @@ $(document).ready(function () {
           '"></input>'
       );
     } else {
-      var hora = $(
-        "#time_day" + id_day + "_student" + id_student
-      ).val();
+      var hora = $("#time_day" + id_day + "_student" + id_student).val();
       $("#time_day" + id_day + "_student" + id_student).val(hora);
     }
   });
@@ -149,11 +160,104 @@ $(document).ready(function () {
     //--- --- ---//
     var id_student = $(this).attr("data-id-student");
     var id_day = $(this).attr("data-id_day");
+    var student_code = $(this).attr("data-student-code");
 
     var hora = $(this).val();
-    console.log("#td-schendule_day" + id_day + "_student" + id_student);
-    $("#td-schendule_day" + id_day + "_student" + id_student).empty().text(hora);
+
+    $("#td-schendule_day" + id_day + "_student" + id_student)
+      .empty()
+      .text(hora);
     //--- --- ---//
+    loading();
+    $.ajax({
+      url: "php/controllers/horarios_controller.php",
+      method: "POST",
+      data: {
+        mod: "updateStudentSchendule",
+        schendule: hora,
+        id_student: id_student,
+        id_day: id_day,
+        student_code: student_code,
+      },
+    })
+      .done(function (data) {
+        Swal.close();
+        var data = JSON.parse(data);
+
+        if (data.response == true) {
+          var myToast = Toastify({
+            text: data.message,
+            duration: 3000,
+          });
+          myToast.showToast();
+        } else {
+          var myToast = Toastify({
+            text: data.message,
+            duration: 3000,
+          });
+          myToast.showToast();
+        }
+
+        //--- --- ---//
+        //--- --- ---//
+      })
+      .fail(function (message) {
+        Swal.close();
+        var myToast = Toastify({
+          text: data.message,
+          duration: 3000,
+        });
+        myToast.showToast();
+      });
+  });
+  $(document).on("change", ".time_day", function () {
+    //--- --- ---//
+    var id_student = $(this).attr("data-id-student");
+    var id_day = $(this).attr("data-id_day");
+    var student_code = $(this).attr("data-student-code");
+
+    var hora = $(this).val();
+    loading();
+    $.ajax({
+      url: "php/controllers/horarios_controller.php",
+      method: "POST",
+      data: {
+        mod: "updateStudentSchendule",
+        schendule: hora,
+        id_student: id_student,
+        id_day: id_day,
+        student_code: student_code,
+      },
+    })
+      .done(function (data) {
+        Swal.close();
+        var data = JSON.parse(data);
+
+        if (data.response == true) {
+          var myToast = Toastify({
+            text: data.message,
+            duration: 3000,
+          });
+          myToast.showToast();
+        } else {
+          var myToast = Toastify({
+            text: data.message,
+            duration: 3000,
+          });
+          myToast.showToast();
+        }
+
+        //--- --- ---//
+        //--- --- ---//
+      })
+      .fail(function (message) {
+        Swal.close();
+        var myToast = Toastify({
+          text: data.message,
+          duration: 3000,
+        });
+        myToast.showToast();
+      });
   });
 
   $(document).on("focusin", ".td-grade-evaluation", function () {
