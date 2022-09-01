@@ -17,4 +17,18 @@ class Horarios
 
         return ($getSites);
     }
+    public function getAllStudents()
+    {
+        include_once('php/models/petitions.php');
+        $queries = new Queries;
+        $sql_sites = "SELECT stud.*, CONCAT(stud.lastname,' ', stud.name) AS name_student, gps.group_code
+        FROM school_control_ykt.students AS stud
+        INNER JOIN school_control_ykt.groups AS gps ON gps.id_group = stud.group_id
+        WHERE  stud.status = 1
+        ORDER BY name_student ASC";
+
+        $getSites = $queries->getData($sql_sites);
+
+        return ($getSites);
+    }
 }

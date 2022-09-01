@@ -65,6 +65,62 @@ function getStudentsActiveByFamily()
 
     echo json_encode($data);
 }
+function getSchedulesByStudent()
+{
+    $id_student = $_POST['id_student'];
+
+    $queries = new Queries;
+
+    $stmt = "SELECT std.*, gps.group_code, fam.family_name, CONCAT(std.lastname,' ', std.name) AS name_student,
+    CONCAT(addr.street,' ', addr.ext_number, ' Int: ', addr.int_number, ', ', addr.colony, ', ', addr.delegation, '. ', addr.postal_code) AS family_address
+    FROM school_control_ykt.students  AS std
+    INNER JOIN school_control_ykt.groups AS gps ON gps.id_group = std.group_id
+    INNER JOIN families_ykt.families AS fam  ON fam.id_family = std.id_family
+    INNER JOIN families_ykt.addresses_families AS addr  ON fam.id_family = addr.id_family
+    WHERE std.id_student = $id_student AND std.status = '1'
+    ORDER BY gps.id_level_grade ASC";
+
+    $getInfoRequest = $queries->getData($stmt);
+    //$last_id = $getInfoRequest['last_id'];
+    if (!empty($getInfoRequest)) {
+
+        for ($s = 0; $s < count($getInfoRequest); $s++) {
+            $student_schendules = array();
+
+            $student_code = $getInfoRequest[$s]->student_code;
+
+            for ($d = 1; $d <= 7; $d++) {
+
+                $sql_search_student_schendule = "SELECT * FROM transport.service_schedules
+            WHERE student_code = '$student_code' AND id_day = '$d'";
+                $getSSchendule =  $queries->getData($sql_search_student_schendule);
+                if (!empty($getSSchendule)) {
+                    $student_schendules[] = $getSSchendule[0];
+                } else {
+                    $student_schendules[] = [];
+                }
+
+                $getInfoRequest[$s]->schedule_student = $student_schendules;
+            }
+        }
+        //--- --- ---//
+        $data = array(
+            'response' => true,
+            'data'                => $getInfoRequest
+        );
+        //--- --- ---//
+    } else {
+        //--- --- ---//
+        $data = array(
+            'response' => false,
+            'message'                => ''
+        );
+        //--- --- ---//
+    }
+
+    echo json_encode($data);
+}
+
 function updateStudentSchendule()
 {
     $id_student = $_POST['id_student'];
