@@ -21,9 +21,9 @@ class data_conn
 
     private $db_name = "iteach";
     private $db_port = 3306;
-    private $db_user = "usuario";
-    private $db_pass = "UsuarioRemoto2020";
-    private $db_host = "servykt.homeip.net";
+    private $db_user = "root";
+    private $db_pass = "Admon2022a*";
+    private $db_host = "localhost";
 
     private $db_conn;
 

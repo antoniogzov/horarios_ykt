@@ -6,7 +6,8 @@ $horarios = new Horarios();
 
 $allFamilies = $horarios->getAllFamilies();
 ?>
-<table class="table table-dark table-striped my-table">
+<h3>Total de familias: <?=count($allFamilies); ?></h3>
+<table class="table table-striped my-table">
     <thead>
         <tr>
             <th style="background-color:#f36e0f !important; color: white !important;" scope="col">CÓDIGO FAMILIA</th>
@@ -17,9 +18,9 @@ $allFamilies = $horarios->getAllFamilies();
     <tbody>
         <?php foreach ($allFamilies as $family) : ?>
             <tr>
-                <th style="background-color:rgba(23,43,77,1) !important; color: white !important;" scope="row"><?= $family->family_code ?></th>
-                <td style="background-color:rgba(23,43,77,1) !important; color: white !important;"><?= $family->family_name ?></td>
-                <td style="background-color:rgba(23,43,77,1) !important; color: white !important;"><button class="btn btn-success btnDesgloseHijos" type="button" data-bs-toggle="modal" data-bs-target="#desgloseHijos" title="Desglose de hijos activos" data-id-family="<?= $family->id_family ?>"><i class="fas fa-stream"></i></button></td>
+                <th class="table-secondary" scope="row"><?= $family->family_code ?></th>
+                <td class="table-secondary"><?= $family->family_name ?></td>
+                <td class="table-secondary"><button class="btn btn-success btnDesgloseHijos" type="button" data-bs-toggle="modal" data-bs-target="#desgloseHijos" title="Desglose de hijos activos" data-id-family="<?= $family->id_family ?>"><i class="fas fa-stream"></i></button></td>
             </tr>
         <?php endforeach; ?>
     </tbody>
@@ -41,6 +42,9 @@ include_once('php\views\modals\desglose_hijos.php');
     
     var tfConfig = {
         rows_counter: true,
+        paging: {
+          results_per_page: ['Records: ', [10, 25, 50, 100]]
+        },
         btn_reset: {
             text: 'Limpiar'
         },
