@@ -60,7 +60,7 @@ include_once('php\views\modals\desglose_hijos.php');
         col_0: 'input',
         col_1: 'input',
         col_2: 'select',
-        col_3: 'select',
+        col_3: 'none',
     };
     var tf = new TableFilter((document.querySelector('.my-table')), tfConfig);
     tf.init();
