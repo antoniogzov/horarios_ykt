@@ -276,3 +276,77 @@ function updateStudentSchenduleGeneral()
 
     echo json_encode($data);
 }
+
+/* function getProspectAddress()
+{
+    $id_student = $_POST['id_student'];
+
+    $queries = new Queries;
+
+    $stmt = "SELECT addr.* FROM prospectos.address AS addr
+    INNER JOIN prospectos.students AS std  ON std.id_prospect = addr.id_prospect
+     WHERE id_student='$id_student' LIMIT 1";
+
+    $getInfoRequest = $queries->getData($stmt);
+    //$last_id = $getInfoRequest['last_id'];
+    if (!empty($getInfoRequest)) {
+        $infoAddress = $getInfoRequest[0];
+        
+        $calle = $infoAddress->street;
+        $num_ext = $infoAddress->n_exterior;
+        $num_int = $infoAddress->n_interior;
+        $colonia = $infoAddress->colony;
+        $localidad = $infoAddress->delegation;
+        $codigo_postal = $infoAddress->postal_code;
+        $entre_calles = $infoAddress->between_streets;
+
+        $html = '';
+
+        <h1>Dirección de Familia</h1>
+        <h3><strong>Calle: </strong> </h3>
+        <h3><strong>N° Ext.: </strong> </h3>
+        <h3><strong>N° Int.: </strong> </h3>
+        <h3><strong>Colonia: </strong> </h3>
+        <h3><strong>Municipio / Alcaldía: </strong> </h3>
+        <h3><strong>Calle: </strong> </h3>
+        <h3><strong>Calle: </strong> </h3>
+        <h4><strong>Pertenece a: </strong> </h4>
+
+
+        for ($s = 0; $s < count($getInfoRequest); $s++) {
+            $student_schendules = array();
+
+            $student_code = $getInfoRequest[$s]->student_code;
+
+            for ($d = 1; $d <= 7; $d++) {
+
+                $sql_search_student_schendule = "SELECT * FROM transport.service_schedules
+            WHERE student_code = '$student_code' AND id_day = '$d'";
+                $getSSchendule =  $queries->getData($sql_search_student_schendule);
+                if (!empty($getSSchendule)) {
+                    $student_schendules[] = $getSSchendule[0];
+                } else {
+                    $student_schendules[] = [];
+                }
+
+                $getInfoRequest[$s]->schedule_student = $student_schendules;
+            }
+        }
+        //--- --- ---//
+        $data = array(
+            'response' => true,
+            'data'                => $getInfoRequest
+        );
+        //--- --- ---//
+    } else {
+        //--- --- ---//
+        $data = array(
+            'response' => false,
+            'message'                => ''
+        );
+        //--- --- ---//
+    }
+
+    echo json_encode($data);
+} */
+

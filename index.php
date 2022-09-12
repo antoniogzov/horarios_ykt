@@ -11,6 +11,9 @@ if (isset($_GET['module'])) {
         case 'familias':
             include_once 'php/views/horarios_familias.php';
             break;
+        case 'admisiones':
+            include_once 'php/views/admisiones.php';
+            break;
 
         default:
             include_once 'php/views/horarios_familias.php';

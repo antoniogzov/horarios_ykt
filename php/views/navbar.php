@@ -16,6 +16,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="?module=alumnos">Alumnos</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="?module=admisiones">Admisiones</a>
+                        </li>
 
                     <?php elseif (($_GET['module'] == 'alumnos') && isset($_GET['module'])) : ?>
                         <li class="nav-item">
@@ -23,6 +26,19 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" href="?module=alumnos">Alumnos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="?module=admisiones">Admisiones</a>
+                        </li>
+                    <?php elseif (($_GET['module'] == 'admisiones') && isset($_GET['module'])) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="?module=familias">Familias</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="?module=alumnos">Alumnos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="?module=admisiones">Admisiones</a>
                         </li>
 
                     <?php else : ?>
@@ -32,6 +48,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="?module=alumnos">Alumnos</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="?module=admisiones">Admisiones</a>
+                        </li>
                     <?php endif; ?>
                 <?php else : ?>
                     <li class="nav-item">
@@ -40,6 +59,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="?module=alumnos">Alumnos</a>
                     </li>
+                    <li class="nav-item">
+                            <a class="nav-link" href="?module=admisiones">Admisiones</a>
+                        </li>
                 <?php endif; ?>
             </ul>
         </div>
