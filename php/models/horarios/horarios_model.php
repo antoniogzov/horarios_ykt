@@ -90,7 +90,7 @@ class Horarios
             } else {
                 $num_int =  ', int. ' . $num_int . ', ';
             }
-            $direccion ="<strong>". $calle . ' ' . $num_ext . $num_int . ', ' . $colonia . ', ' . $codigo_postal . ', ' . $localidad . '. </strong> <br> Entre calles: ' . $entre_calles;
+            $direccion ="<strong>". $calle . ' ' . $num_ext . $num_int . ', ' . $colonia . '. </strong> <br> Entre calles: ' . $entre_calles;
 
 
 

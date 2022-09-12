@@ -26,8 +26,32 @@ $allStudents = $horarios->getAllStudentsAdmisions();
     <tbody>
         <?php foreach ($allStudents as $student) :
             $gender = 'HOMBRE';
-            if($student->gender==1){
+            if ($student->gender == 1) {
                 $gender = 'MUJER';
+            }
+            switch ($student->id_status) {
+                case '3':
+                    $txt_status = "Rechazado";
+                    break;
+                case '4':
+                    $txt_status = "Inscripción cancelada";
+                    break;
+                case '2':
+                    $txt_status = "Inscrito";
+                    break;
+                case '7':
+                    $txt_status = "No admitido";
+                    break;
+                case '8':
+                    $txt_status = "Dado de Baja";
+                    break;
+                case '11':
+                    $txt_status = "En proceso de baja";
+                    break;
+
+                default:
+                    $txt_status = "En proceso de admisión";
+                    break;
             }
             $class_boot = str_replace('label label-', '', $student->class);
             $status = 'ACTIVO';
@@ -36,18 +60,18 @@ $allStudents = $horarios->getAllStudentsAdmisions();
                 $status = 'SUSPENCIÓN ADMINISTRATIVA';
                 $class_html = 'danger';
             } */
-            
+
         ?>
-            <tr id="<?=$student->id_student?>">
+            <tr id="<?= $student->id_student ?>">
                 <td scope="row"><?= strtoupper($student->name_student) ?></td>
                 <td scope="row"><?= $student->birthday ?></td>
-                <td scope="row"><?= $student->age?></td>
-                <td scope="row"><?= $gender?></td>
+                <td scope="row"><?= $student->age ?></td>
+                <td scope="row"><?= $gender ?></td>
                 <td scope="row"><?= $student->academic_grade ?></td>
                 <td scope="row"><?= $student->campus ?></td>
                 <td scope="row"><?= $student->ciclo_escolar ?></td>
                 <td scope="row"><?= $student->iTeach_code ?></td>
-                <td scope="row"><span class="badge rounded-pill bg-<?=$class_boot?>"><?= $student->estado ?></span></td>
+                <td scope="row"><span class="badge rounded-pill bg-<?= $class_boot ?>"><?= $txt_status ?></span></td>
                 <td scope="row"><?= $student->date_in ?></td>
                 <td scope="row"><?= $horarios->getAllStudentAddress($student->id_student) ?></td>
             </tr>
