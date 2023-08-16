@@ -16,14 +16,41 @@ function getStudentsActiveByFamily()
 
     $queries = new Queries;
 
-    $stmt = "SELECT std.*, gps.group_code, fam.family_name,
-    CONCAT(addr.street,' ', addr.ext_number, ' Int: ', addr.int_number, ', ', addr.colony, ', ', addr.delegation, '. ', addr.postal_code) AS family_address
+    $stmt = "SELECT std.*, gps.group_code, UPPER(fam.family_name) AS family_name,
+   UPPER( CONCAT
+            (addr.street,' ',
+            addr.ext_number,
+                (CASE
+                WHEN addr.int_number IS NOT NULL THEN CONCAT(' Int: ', addr.int_number)
+                ELSE ''
+                END
+                ),
+                (CASE
+                WHEN addr.colony IS NOT NULL THEN CONCAT(', ', addr.colony)
+                ELSE ''
+                END
+                ),
+                (CASE
+                WHEN addr.delegation IS NOT NULL THEN CONCAT(', ', addr.delegation)
+                ELSE ''
+                END
+                ),
+                (CASE
+                WHEN addr.postal_code IS NOT NULL THEN CONCAT(', ', addr.postal_code)
+                ELSE ''
+                END
+                )
+             )
+            )
+        AS family_address
     FROM school_control_ykt.students  AS std
     INNER JOIN school_control_ykt.groups AS gps ON gps.id_group = std.group_id
     INNER JOIN families_ykt.families AS fam  ON fam.id_family = std.id_family
     INNER JOIN families_ykt.addresses_families AS addr  ON fam.id_family = addr.id_family
     WHERE std.id_family = $id_family AND std.status = '1'
     ORDER BY gps.id_level_grade ASC";
+
+    //echo $stmt;
 
     $getInfoRequest = $queries->getData($stmt);
     //$last_id = $getInfoRequest['last_id'];
@@ -65,14 +92,39 @@ function getStudentsActiveByFamily()
 
     echo json_encode($data);
 }
+
 function getSchedulesByStudent()
 {
     $id_student = $_POST['id_student'];
 
     $queries = new Queries;
 
-    $stmt = "SELECT std.*, gps.group_code, fam.family_name, CONCAT(std.lastname,' ', std.name) AS name_student,
-    CONCAT(addr.street,' ', addr.ext_number, ' Int: ', addr.int_number, ', ', addr.colony, ', ', addr.delegation, '. ', addr.postal_code) AS family_address
+    $stmt = "SELECT std.*, gps.group_code, UPPER(fam.family_name) AS family_name, UPPER(CONCAT(std.lastname,' ', std.name)) AS name_student,
+    CONCAT
+            (addr.street,' ',
+            addr.ext_number,
+                (CASE
+                WHEN addr.int_number IS NOT NULL THEN CONCAT(' Int: ', addr.int_number)
+                ELSE ''
+                END
+                ),
+                (CASE
+                WHEN addr.colony IS NOT NULL THEN CONCAT(', ', addr.colony)
+                ELSE ''
+                END
+                ),
+                (CASE
+                WHEN addr.delegation IS NOT NULL THEN CONCAT(', ', addr.delegation)
+                ELSE ''
+                END
+                ),
+                (CASE
+                WHEN addr.postal_code IS NOT NULL THEN CONCAT(', ', addr.postal_code)
+                ELSE ''
+                END
+                )
+             )
+        AS family_address
     FROM school_control_ykt.students  AS std
     INNER JOIN school_control_ykt.groups AS gps ON gps.id_group = std.group_id
     INNER JOIN families_ykt.families AS fam  ON fam.id_family = std.id_family

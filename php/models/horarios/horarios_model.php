@@ -21,10 +21,16 @@ class Horarios
     {
         include_once('php/models/petitions.php');
         $queries = new Queries;
-        $sql_sites = "SELECT stud.*, CONCAT(stud.lastname,' ', stud.name) AS name_student, gps.group_code, fam.status AS status_familia
+        $sql_sites = "SELECT stud.*, CONCAT(stud.lastname,' ', stud.name) AS name_student, gps.group_code, fam.status AS status_familia,
+        CASE 
+            WHEN sch.id_service_schedules IS NULL THEN 'ffa3a3' 
+            ELSE ''
+        END
+        AS color_html
         FROM school_control_ykt.students AS stud
         INNER JOIN school_control_ykt.groups AS gps ON gps.id_group = stud.group_id
         INNER JOIN families_ykt.families AS fam  ON fam.id_family = stud.id_family
+        LEFT JOIN transport.service_schedules AS sch ON sch.id_service_schedules = (SELECT id_service_schedules FROM transport.service_schedules WHERE id_student = stud.id_student LIMIT 1)
         WHERE  stud.status = 1
         ORDER BY name_student ASC";
 

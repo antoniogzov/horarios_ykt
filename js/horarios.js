@@ -53,8 +53,8 @@ $(document).ready(function () {
               '" data-id-student="' +
               id_student +
               '" type="time" id="time" value="00:00"></th>';
-            html += "<td>" + student_code + "</td>";
-            html += "<td>" + student_name + "</td>";
+            html += "<td>" + student_code.toUpperCase() + "</td>";
+            html += "<td>" + student_name.toUpperCase() + "</td>";
             html += "<td>" + group_code + "</td>";
 
             for (let h = 0; h < data.data[s].schedule_student.length; h++) {

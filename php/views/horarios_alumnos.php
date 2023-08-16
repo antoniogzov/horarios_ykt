@@ -27,11 +27,11 @@ $allStudents = $horarios->getAllStudents();
             }
         ?>
             <tr>
-                <th class="table-<?= $class_html ?>"><?= $student->student_code ?></td>
-                <td class="table-<?= $class_html ?>" scope="row"><?= $student->name_student ?></td>
-                <td class="table-<?= $class_html ?>" scope="row"><?= $student->name_student ?></td>
-                <td class="table-<?= $class_html ?>" scope="row"><?= $status ?></td>
-                <td class="table-<?= $class_html ?>"><button class="btn btn-success btnDesgloseAlumno" type="button" data-bs-toggle="modal" data-bs-target="#desgloseAlumno" title="Desglose de hijos activos" data-id-student="<?= $student->id_student ?>"><i class="fas fa-stream"></i></button></td>
+                <th style="background-color: #<?=$student->color_html?> !important;" class="table-<?= $class_html ?>"><?= $student->student_code ?></td>
+                <td style="background-color: #<?=$student->color_html?> !important;" class="table-<?= $class_html ?>" scope="row"><?= $student->name_student ?></td>
+                <td style="background-color: #<?=$student->color_html?> !important;" class="table-<?= $class_html ?>" scope="row"><?= $student->name_student ?></td>
+                <td style="background-color: #<?=$student->color_html?> !important;" class="table-<?= $class_html ?>" scope="row"><?= $status ?></td>
+                <td style="background-color: #<?=$student->color_html?> !important;" class="table-<?= $class_html ?>"><button class="btn btn-success btnDesgloseAlumno" type="button" data-bs-toggle="modal" data-bs-target="#desgloseAlumno" title="Desglose de hijos activos" data-id-student="<?= $student->id_student ?>"><i class="fas fa-stream"></i></button></td>
             </tr>
         <?php endforeach; ?>
     </tbody>
