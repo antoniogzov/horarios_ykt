@@ -49,7 +49,7 @@ class Horarios
         FROM colaboradores_ykt.colaboradores AS colab
         INNER JOIN colaboradores_ykt.relation_colaborator_ccostos AS rcc ON rcc.no_colaborador = colab.no_colaborador
         WHERE  colab.status = 1 AND rcc.routes_supervisor = 1
-        ORDER BY colab_name  ASC LIMIT 5";
+        ORDER BY colab_name  ASC";
 
         $getSites = $queries->getData($sql_sites);
 
