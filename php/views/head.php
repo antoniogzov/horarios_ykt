@@ -27,7 +27,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
 
 
-    <title>TRANSPORTES YKT</title>
+    <title>GESTIÓN TRANSPORTES YKT</title>
 </head>
 
 <body>

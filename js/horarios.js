@@ -105,9 +105,7 @@ $(document).ready(function () {
             html += "</tr>";
           }
           $("#accordionHijosActivos").empty().append(html);
-
-          } else {
-         
+        } else {
         }
 
         //--- --- ---//
@@ -229,9 +227,7 @@ $(document).ready(function () {
             html += "</tr>";
           }
           $("#accordionAlumno").empty().append(html);
-
-          } else {
-         
+        } else {
         }
 
         //--- --- ---//
@@ -275,7 +271,7 @@ $(document).ready(function () {
       $("#time_day" + id_day + "_student" + id_student).val(hora);
     }
   });
-  
+
   $(document).on("focusout", ".time_day", function () {
     //--- --- ---//
     var id_student = $(this).attr("data-id-student");
@@ -379,12 +375,130 @@ $(document).ready(function () {
         myToast.showToast();
       });
   }); */
+
+  $(document).on("click", ".saveNewRouteTeacherRel", function () {
+    var no_colaborador = $("#select_colaborator option:selected").val();
+    var value = 1;
+    loading();
+    $.ajax({
+      url: "php/controllers/horarios_controller.php",
+      method: "POST",
+      data: {
+        mod: "updateColab",
+        no_colaborador: no_colaborador,
+        value: value,
+      },
+    })
+      .done(function (data) {
+        Swal.close();
+        var data = JSON.parse(data);
+        console.log(data);
+        if (data.response == true) {
+          var no_colab = data.teacher_data[0].no_colaborador;
+          var mail = data.teacher_data[0].correo_institucional;
+          var contrasena_general = data.teacher_data[0].contrasena_general;
+          var colab_name = data.teacher_data[0].colab_name;
+
+          html = "";
+          html += "<tr>";
+          html += '<th title="' + no_colaborador + '" >' + colab_name + "</td>";
+          html += '<td scope="row">' + mail + "</td>";
+          html += '<td scope="row">' + contrasena_general + "</td>";
+          html += "<td>";
+          html +=
+            '    <button data-no-colaborador="' +
+            no_colab +
+            '"  class="btn btn-danger updateColab" type="submit">';
+          html +=
+            '        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">';
+          html +=
+            '            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />';
+          html +=
+            '            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />';
+          html += "        </svg>";
+          html += "    </button>";
+          html += "</td>";
+          html += "</tr>";
+          $("#tablaColabTransp tr:last").after(html);
+          var myToast = Toastify({
+            text: data.message,
+            duration: 3000,
+          });
+          myToast.showToast();
+        } else {
+          var myToast = Toastify({
+            text: data.message,
+            duration: 3000,
+          });
+          myToast.showToast();
+        }
+
+        //--- --- ---//
+        //--- --- ---//
+      })
+      .fail(function (message) {
+        Swal.close();
+        var myToast = Toastify({
+          text: data.message,
+          duration: 3000,
+        });
+        myToast.showToast();
+      });
+  });
+
+  $(document).on("click", ".updateColab", function () {
+    var no_colaborador = $(this).attr("data-no-colaborador");
+    $(this).closest('tr').remove();
+    var value = 0;
+    loading();
+    $.ajax({
+      url: "php/controllers/horarios_controller.php",
+      method: "POST",
+      data: {
+        mod: "updateColab",
+        no_colaborador: no_colaborador,
+        value: value,
+      },
+    })
+      .done(function (data) {
+        Swal.close();
+        var data = JSON.parse(data);
+        console.log(data);
+        if (data.response == true) {
+          var myToast = Toastify({
+            text: data.message,
+            duration: 3000,
+          });
+          
+          myToast.showToast();
+        } else {
+          var myToast = Toastify({
+            text: data.message,
+            duration: 3000,
+          });
+          myToast.showToast();
+        }
+
+        //--- --- ---//
+        //--- --- ---//
+      })
+      .fail(function (message) {
+        Swal.close();
+        var myToast = Toastify({
+          text: data.message,
+          duration: 3000,
+        });
+        myToast.showToast();
+      });
+  });
+
   $(document).on("click", ".btnFamilyAddress", function () {
     Swal.fire({
-      icon: 'info',
-      html: '<strong>HOLA</strong>',
-    })
-   /*  var id_student = $(this).attr("data-id-student");
+      icon: "info",
+      html: "<strong>HOLA</strong>",
+    });
+
+    /*  var id_student = $(this).attr("data-id-student");
     loading();
     $.ajax({
       url: "php/controllers/horarios_controller.php",
@@ -568,6 +682,9 @@ $(document).ready(function () {
   });
 });
 
+$(document).ready(function () {
+  $(".js-example-basic-single").select2();
+});
 
 function loading() {
   Swal.fire({

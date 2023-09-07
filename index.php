@@ -15,6 +15,11 @@ if (isset($_GET['module'])) {
             include_once 'php/views/admisiones.php';
             break;
 
+        case 'prefectas':
+            include_once 'php/views/prefectas.php';
+            break;
+
+
         default:
             include_once 'php/views/horarios_familias.php';
             break;

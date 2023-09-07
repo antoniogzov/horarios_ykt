@@ -39,6 +39,42 @@ class Horarios
         return ($getSites);
     }
 
+    public function getAllPrefectas()
+    {
+        include_once('php/models/petitions.php');
+        $queries = new Queries;
+        $sql_sites = "SELECT colab.no_colaborador, colab.no_colaborador, 
+        CONCAT(colab.nombres_colaborador, ' ', colab.apellido_paterno_colaborador ,' ', colab.apellido_materno_colaborador) AS colab_name,
+        contrasena_general, correo_institucional
+        FROM colaboradores_ykt.colaboradores AS colab
+        INNER JOIN colaboradores_ykt.relation_colaborator_ccostos AS rcc ON rcc.no_colaborador = colab.no_colaborador
+        WHERE  colab.status = 1 AND rcc.routes_supervisor = 1
+        ORDER BY colab_name  ASC LIMIT 5";
+
+        $getSites = $queries->getData($sql_sites);
+
+        return ($getSites);
+    }
+
+
+    public function getAllColabs()
+    {
+        include_once('php/models/petitions.php');
+        $queries = new Queries;
+        $sql_sites = "SELECT DISTINCT colab.no_colaborador,
+        UPPER(CONCAT(colab.no_colaborador, ' | ', colab.nombres_colaborador, ' ', colab.apellido_paterno_colaborador ,' ', colab.apellido_materno_colaborador, ' | ', colab.correo_institucional)) AS colab_name,
+        contrasena_general, correo_institucional
+        FROM colaboradores_ykt.colaboradores AS colab
+        LEFT JOIN colaboradores_ykt.relation_colaborator_ccostos AS rcc ON rcc.no_colaborador = colab.no_colaborador
+        WHERE  colab.status = 1 AND rcc.routes_supervisor != 1
+        ORDER BY colab_name  ASC";
+
+        $getSites = $queries->getData($sql_sites);
+
+        return ($getSites);
+    }
+
+    
     public function getAllStudentsAdmisions()
     {
         include_once('php/models/petitions.php');

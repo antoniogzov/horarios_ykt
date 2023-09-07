@@ -250,6 +250,40 @@ function updateStudentSchendule()
 
     echo json_encode($data);
 }
+
+function updateColab()
+{
+    $no_colaborador = $_POST['no_colaborador'];
+    $value = $_POST['value'];
+
+    $queries = new Queries;
+
+    $stmt2 = "SELECT colab.*, UPPER(CONCAT(colab.nombres_colaborador, ' ', colab.apellido_paterno_colaborador ,' ', colab.apellido_materno_colaborador)) AS colab_name
+    FROM colaboradores_ykt.colaboradores AS colab
+    WHERE no_colaborador = '$no_colaborador'";
+
+
+    $stmt = "UPDATE colaboradores_ykt.relation_colaborator_ccostos SET routes_supervisor = $value WHERE no_colaborador = $no_colaborador";
+
+    //$last_id = $getInfoRequest['last_id'];
+    if ($queries->insertData($stmt)) {
+        $getTeacherData = $queries->getData($stmt2);
+        $data = array(
+            'response' => true,
+            'teacher_data' => $getTeacherData,
+            'message' => "Proceso realizado con éxito!!"
+        );
+    } else {
+        //--- --- ---//
+        $data = array(
+            'response' => false,
+            'message' => "Ocurrió un error en el proceso!!"
+        );
+    }
+
+
+    echo json_encode($data);
+}
 function updateStudentSchenduleGeneral()
 {
     $id_student = $_POST['id_student'];
@@ -401,4 +435,3 @@ function updateStudentSchenduleGeneral()
 
     echo json_encode($data);
 } */
-

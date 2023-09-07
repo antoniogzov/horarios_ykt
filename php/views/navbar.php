@@ -1,6 +1,6 @@
 <nav style=" background-color: #172b4d !important;" class="navbar navbar-expand-xl navbar-dark bg-dark" aria-label="Sixth navbar example">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">HORARIOS DE TRANSPOTES YKT</a>
+        <a class="navbar-brand" href="#">GESTION DE TRANSPORTES YKT</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample06" aria-controls="navbarsExample06" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -20,6 +20,10 @@
                             <a class="nav-link" href="?module=admisiones">Admisiones</a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link" href="?module=prefectas">Prefectas</a>
+                        </li>
+
                     <?php elseif (($_GET['module'] == 'alumnos') && isset($_GET['module'])) : ?>
                         <li class="nav-item">
                             <a class="nav-link" href="?module=familias">Familias</a>
@@ -29,6 +33,10 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="?module=admisiones">Admisiones</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="?module=prefectas">Prefectas</a>
                         </li>
                     <?php elseif (($_GET['module'] == 'admisiones') && isset($_GET['module'])) : ?>
                         <li class="nav-item">
@@ -41,6 +49,24 @@
                             <a class="nav-link active" href="?module=admisiones">Admisiones</a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link" href="?module=prefectas">Prefectas</a>
+                        </li>
+                    <?php elseif (($_GET['module'] == 'prefectas') && isset($_GET['module'])) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="?module=familias">Familias</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="?module=alumnos">Alumnos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="?module=admisiones">Admisiones</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link active" href="?module=prefectas">Prefectas</a>
+                        </li>
+
                     <?php else : ?>
                         <li class="nav-item">
                             <a class="nav-link active" href="?module=familias">Familias</a>
@@ -51,6 +77,10 @@
                         <li class="nav-item">
                             <a class="nav-link" href="?module=admisiones">Admisiones</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="?module=prefectas">Prefectas</a>
+                        </li>
                     <?php endif; ?>
                 <?php else : ?>
                     <li class="nav-item">
@@ -60,8 +90,12 @@
                         <a class="nav-link" href="?module=alumnos">Alumnos</a>
                     </li>
                     <li class="nav-item">
-                            <a class="nav-link" href="?module=admisiones">Admisiones</a>
-                        </li>
+                        <a class="nav-link" href="?module=admisiones">Admisiones</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="?module=prefectas">Prefectas</a>
+                    </li>
                 <?php endif; ?>
             </ul>
         </div>
