@@ -17,6 +17,7 @@ $getAllColabs = $horarios->getAllColabs();
                 <table class="table table-striped my-table" id="tablaColabTransp">
                     <thead>
                         <tr>
+                            <th style="background-color:#f36e0f !important; color: white !important;" scope="col">N° Colab.</th>
                             <th style="background-color:#f36e0f !important; color: white !important;" scope="col">NOMBRE</th>
                             <th style="background-color:#f36e0f !important; color: white !important;" scope="col">CORREO INSTITUCIONAL</th>
                             <th style="background-color:#f36e0f !important; color: white !important;" scope="col">CONTRASEÑA</th>
@@ -31,6 +32,7 @@ $getAllColabs = $horarios->getAllColabs();
 
                         ?>
                             <tr>
+                                <th title="<?= $student->no_colaborador ?>" style="background-color: #<?= $student->color_html ?> !important;" class="table-<?= $class_html ?>"><?= $student->no_colaborador ?></td>
                                 <th title="<?= $student->no_colaborador ?>" style="background-color: #<?= $student->color_html ?> !important;" class="table-<?= $class_html ?>"><?= $student->colab_name ?></td>
                                 <td style="background-color: #<?= $student->color_html ?> !important;" class="table-<?= $class_html ?>" scope="row"><?= $student->correo_institucional ?></td>
                                 <td style="background-color: #<?= $student->color_html ?> !important;" class="table-<?= $class_html ?>" scope="row"><?= $student->contrasena_general ?></td>
@@ -86,7 +88,7 @@ include_once('php\views\modals\desglose_alumno.php');
     var tfConfig = {
         rows_counter: true,
         paging: {
-            results_per_page: ['Records: ', [10, 25, 50, 100]]
+            results_per_page: ['Records: ', [20, 50, 100]]
         },
         btn_reset: {
             text: 'Limpiar'
@@ -95,8 +97,9 @@ include_once('php\views\modals\desglose_alumno.php');
         col_0: 'input',
         col_1: 'input',
         col_2: 'input',
-        col_3: 'none',
-        
+        col_3: 'input',
+        col_4: 'none',
+
     };
     var tf = new TableFilter((document.querySelector('#tablaColabTransp')), tfConfig);
     tf.init();

@@ -66,7 +66,7 @@ class Horarios
         contrasena_general, correo_institucional
         FROM colaboradores_ykt.colaboradores AS colab
         LEFT JOIN colaboradores_ykt.relation_colaborator_ccostos AS rcc ON rcc.no_colaborador = colab.no_colaborador
-        WHERE  colab.status = 1 AND rcc.routes_supervisor != 1
+        WHERE  colab.status = 1 AND rcc.routes_supervisor != 1 AND id_area_colaborador = 5
         ORDER BY colab_name  ASC";
 
         $getSites = $queries->getData($sql_sites);
