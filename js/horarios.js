@@ -121,6 +121,111 @@ $(document).ready(function () {
         });
       });
   });
+  $(document).on("click", ".btnTrustedInfo", function () {
+    var id_family = $(this).attr("data-id-family");
+    loading();
+    $.ajax({
+      url: "php/controllers/horarios_controller.php",
+      method: "POST",
+      data: {
+        mod: "getTrustedContactsFamily",
+        id_family: id_family,
+      },
+    })
+      .done(function (data) {
+        Swal.close();
+        var data = JSON.parse(data);
+        
+        if (data.response == true) {
+          $("#conctactInfoDiv").html(data.html);
+          Swal.close();
+        } else {
+        }
+
+        //--- --- ---//
+        //--- --- ---//
+      })
+      .fail(function (message) {
+        VanillaToasts.create({
+          title: "Error",
+          text: "Ocurrió un error, intentelo nuevamente",
+          type: "error",
+          timeout: 1200,
+          positionClass: "topRight",
+        });
+      });
+  });
+  $(document).on("click", ".addNewTrusted", function () {
+    var id_family = $(this).attr("data-id");
+    loading();
+    $.ajax({
+      url: "php/controllers/horarios_controller.php",
+      method: "POST",
+      data: {
+        mod: "getNewTrustedContactsFamilyForm",
+        id_family: id_family,
+      },
+    })
+      .done(function (data) {
+        Swal.close();
+        var data = JSON.parse(data);
+        
+        if (data.response == true) {
+          console.log("here");
+          $("#newTrusted").html(data.html);
+          Swal.close();
+        } else {
+        }
+
+        //--- --- ---//
+        //--- --- ---//
+      })
+      .fail(function (message) {
+        VanillaToasts.create({
+          title: "Error",
+          text: "Ocurrió un error, intentelo nuevamente",
+          type: "error",
+          timeout: 1200,
+          positionClass: "topRight",
+        });
+      });
+  });
+  
+  $(document).on("click", ".editContactInfo", function () {
+    var id_contact = $(this).attr("data-id");
+    loading();
+    $.ajax({
+      url: "php/controllers/horarios_controller.php",
+      method: "POST",
+      data: {
+        mod: "getTrustedContactsFamilyForm",
+        id_contact: id_contact,
+      },
+    })
+      .done(function (data) {
+        Swal.close();
+        var data = JSON.parse(data);
+        
+        if (data.response == true) {
+          $("#card" + id_contact).html(data.html);
+          Swal.close();
+        } else {
+        }
+
+        //--- --- ---//
+        //--- --- ---//
+      })
+      .fail(function (message) {
+        VanillaToasts.create({
+          title: "Error",
+          text: "Ocurrió un error, intentelo nuevamente",
+          type: "error",
+          timeout: 1200,
+          positionClass: "topRight",
+        });
+      });
+  });
+
   $(document).on("click", ".btnDesgloseAlumno", function () {
     var id_student = $(this).attr("data-id-student");
     loading();
@@ -243,6 +348,20 @@ $(document).ready(function () {
         });
       });
   });
+  $(document).on("change", "#relationship", function () {
+    var id_relationship = $(this).val();
+    if (id_relationship == 'OTRO') {
+      $(this)
+        .closest("div")
+        .append(
+          '<label class="col-md-2 col-form-label form-control-label"></label><div class="col-md-10"><input type="text" name="manual_relationship" id="manual_relationship" placeholder="Parentezco" class="form-control" value="" required=""></div>'
+        );
+    } else {
+      $("#manual_relationship").closest("div").remove();
+    }
+  });
+
+ 
   $(document).on("focusin", ".td-edit-day-schendule", function () {
     var hora = $(this).text();
     var id_student = $(this).attr("data-id-student");
@@ -448,7 +567,7 @@ $(document).ready(function () {
 
   $(document).on("click", ".updateColab", function () {
     var no_colaborador = $(this).attr("data-no-colaborador");
-    $(this).closest('tr').remove();
+    $(this).closest("tr").remove();
     var value = 0;
     loading();
     $.ajax({
@@ -469,7 +588,7 @@ $(document).ready(function () {
             text: data.message,
             duration: 3000,
           });
-          
+
           myToast.showToast();
         } else {
           var myToast = Toastify({
@@ -682,9 +801,140 @@ $(document).ready(function () {
   });
 });
 
-$(document).ready(function () {
-  $(".js-example-basic-single").select2();
-});
+function addContacts(id_family) {
+  //--- CONTACTO 1 ---//
+  var form_data_contact_1 = document.querySelector('#form-contact-1');
+  var elements_contact_1 = form_data_contact_1.elements;
+  //--- --- ---//
+  let data_contact_1_complete = true;
+  let obj_contact_1 = {};
+  Array.from(elements_contact_1).forEach(element => {
+    if (element.id == 'relationship' && element.value == 'OTRO') {
+      element = $('#manual_relationship');
+  }
+      if (!element.disabled) {
+          if (element.required) {
+              if (element.value == '' || element.value == null) {
+                  data_contact_1_complete = false;
+                  element.classList.add('is-invalid');
+                  element.focus();
+              }
+          }
+          //--- --- ---//
+          var el_name = element.name;
+          if (element.id == 'manual_relationship') {
+            el_name = 'relationship';
+          }
+          obj_contact_1[el_name] = element.value;
+      }
+  });
+  //--- --- ---//
+  if (data_contact_1_complete) {
+      saveContactsDB(obj_contact_1, id_family);
+  }
+}
+
+function updateContact(trusted_contact_id) {
+  //--- CONTACTO ---//
+  var form_data_contact_1 = document.querySelector('#form-contact-' + trusted_contact_id);
+  var elements_contact_1 = form_data_contact_1.elements;
+  //--- --- ---//
+  let data_contact_1_complete = true;
+  let obj_contact_1 = {};
+  Array.from(elements_contact_1).forEach(element => {
+
+    if (element.id == 'relationship' && element.value == 'OTRO') {
+        element = $('#manual_relationship');
+    }
+      if (!element.disabled) {
+          if (element.required) {
+              if (element.value == '' || element.value == null) {
+                  data_contact_1_complete = false;
+                  element.classList.add('is-invalid');
+                  element.focus();
+              }
+          }
+          //--- --- ---//
+          
+          let valueElement = element.value;
+          var el_name = element.name;
+          if (element.id == 'manual_relationship') {
+            el_name = 'relationship';
+          }
+          obj_contact_1[el_name] = valueElement;
+      }
+  });
+  //--- --- ---//
+  if (data_contact_1_complete) {
+    
+      updateContactsDB(obj_contact_1, trusted_contact_id);
+  }
+  //--- --- ---//
+}
+function saveContactsDB(obj_contact_1, id_family) {
+  loading();
+  const data = new FormData();
+  data.append('mod', 'SaveNewContacts');
+  data.append('obj_contact_1', JSON.stringify(obj_contact_1));
+  data.append('id_family', id_family);
+  fetch('php/controllers/horarios_controller.php', {
+      method: 'POST',
+      body: data
+  }).then(function(response) {
+      if (response.ok) {
+          return response.json()
+      } else {
+          console.log(response);
+          Swal.fire('Error', 'Ocurrió un error al intentar conectarse a la base de datos :[', 'error');
+          throw new "Error en la llamada Ajax";
+      }
+  }).then(function(data) {
+      if (data.response) {
+          Swal.fire({
+              title: 'Listo',
+              text: 'Se actualizaron correctamente los datos',
+              icon: 'success'
+          }).then((result) => {
+            loading();
+              window.location.reload();
+          })
+          //Swal.fire('Listo!', 'Se actualizaron correctamente los datos', 'success');
+      }
+  }).catch(function(err) {
+      Swal.fire('Atención!', 'Ocurrió un error al intentar procesar su petición, intento nuevamente porfavor', 'info');
+      console.log(err);
+  });
+}
+function updateContactsDB(obj_contact_1, trusted_contact_id) {
+  loading();
+  const data = new FormData();
+  data.append('mod', 'UpdateContacts');
+  data.append('obj_contact_1', JSON.stringify(obj_contact_1));
+  data.append('trusted_contact_id', trusted_contact_id);
+  fetch('php/controllers/horarios_controller.php', {
+      method: 'POST',
+      body: data
+  }).then(function(response) {
+      if (response.ok) {
+          return response.json()
+      } else {
+          console.log(response);
+          Swal.fire('Error', 'Ocurrió un error al intentar conectarse a la base de datos :[', 'error');
+          throw new "Error en la llamada Ajax";
+      }
+  }).then(function(data) {
+      if (data.response) {
+          Swal.fire('Listo!', 'Se actualizaron correctamente los datos', 'success');
+          $(".closeTrustContact").trigger('click');
+          $("#btnTrustedInfo").trigger('click');
+      }
+  })
+  /*.catch(function(err) {
+          Swal.fire('Atención!', 'Ocurrió un error al intentar procesar su petición, intento nuevamente porfavor', 'info');
+          console.log(err);
+      })*/
+  ;
+}
 
 function loading() {
   Swal.fire({

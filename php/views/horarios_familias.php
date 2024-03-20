@@ -14,6 +14,7 @@ $allFamilies = $horarios->getAllFamilies();
             <th style="background-color:#f36e0f !important; color: white !important;" scope="col">FAMILIA</th>
             <th style="background-color:#f36e0f !important; color: white !important;" scope="col">ESTATUS</th>
             <th style="background-color:#f36e0f !important; color: white !important;" scope="col">HIJOS ACTIVOS</th>
+            <th style="background-color:#f36e0f !important; color: white !important;" scope="col">DIRECTORIO DE CONTACTOS</th>
         </tr>
     </thead>
     <tbody>
@@ -27,9 +28,11 @@ $allFamilies = $horarios->getAllFamilies();
             ?>
             <tr>
                 <th class="table-<?=$class_html?>" scope="row"><?= $family->family_code ?></th>
-                <td class="table-<?=$class_html?>"><?= $family->family_name ?></td>
+                <td class="table-<?=$class_html?>"><?= mb_strtoupper($family->family_name) ?></td>
                 <td class="table-<?=$class_html?>" scope="row"><?= $status ?></td>
                 <td class="table-<?=$class_html?>"><button class="btn btn-success btnDesgloseHijos" type="button" data-bs-toggle="modal" data-bs-target="#desgloseHijos" title="Desglose de hijos activos" data-id-family="<?= $family->id_family ?>"><i class="fas fa-stream"></i></button></td>
+                <td class="table-<?=$class_html?>"><button class="btn btn-primary btnTrustedInfo" type="button" data-bs-toggle="modal" data-bs-target="#additionalContactInfoModal" title="Directorio de contactos" data-id-family="<?= $family->id_family ?>"><i class="fas fa-address-book"></i></button></td>
+                
             </tr>
         <?php endforeach; ?>
     </tbody>
@@ -42,6 +45,7 @@ $allFamilies = $horarios->getAllFamilies();
 
 <?php
 include_once('php\views\modals\desglose_hijos.php');
+include_once('php\views\modals\trustedContacts.php');
 
 ?>
 
