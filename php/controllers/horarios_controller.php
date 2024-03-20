@@ -259,7 +259,7 @@ function getTrustedContactsFamilyForm()
             <div class="card-header">
                 <h3 class="mb-0">Contacto: ' . $getInfoRequest[$s]->contact_full_name . '</h3>
             </div>
-            <form id="form-contact-397" class="mb-3">
+            <form id="form-contact-'.$id_contact.'" class="mb-3">
                 <div class="form-group row mt-4">
                     <label class="col-md-2 col-form-label form-control-label">
                         * Nombre completo:
