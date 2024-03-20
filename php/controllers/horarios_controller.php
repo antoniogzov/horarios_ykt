@@ -344,7 +344,7 @@ function getTrustedContactsFamilyForm()
                     </div>
                 </div>
             </form>
-            <button type="button" class="btn btn-success col mt-4" onclick="updateContact(' . $getInfoRequest[$s]->trusted_contact_id . ')">Actualizar</button>
+            <button type="button" class="btn btn-success col mt-4" onclick="updateContact(' . $getInfoRequest[$s]->trusted_contact_id . ', ' . $getInfoRequest[$s]->id_family . ')">Actualizar</button>
         </div>
             </div>
           </div><br>';
@@ -558,6 +558,7 @@ function SaveNewContacts() {
 function UpdateContacts() {
 	$data_contact = json_decode($_POST['obj_contact_1']);
 	$trusted_contact_id = $_POST['trusted_contact_id'];
+    $id_family = $_POST['id_family'];
 
 	$response = true;
     $queries = new Queries;
@@ -587,7 +588,7 @@ function UpdateContacts() {
 	}
 
 	if($response){
-		/* Queries::getInstance()->updateAdvance('secondary_contacts', $_SESSION['id_family']); */
+		Queries::getInstance()->updateAdvance('secondary_contacts', $id_family);
 	}
 
 	$result = array('response' => $response);

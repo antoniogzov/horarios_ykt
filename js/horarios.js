@@ -123,13 +123,16 @@ $(document).ready(function () {
   });
   $(document).on("click", ".btnTrustedInfo", function () {
     var id_family = $(this).attr("data-id-family");
+    var family_name = $(this).closest('tr').find("td:eq(0)").text();
+
+
     loading();
     $.ajax({
       url: "php/controllers/horarios_controller.php",
       method: "POST",
       data: {
         mod: "getTrustedContactsFamily",
-        id_family: id_family,
+        id_family: id_family
       },
     })
       .done(function (data) {
@@ -137,6 +140,7 @@ $(document).ready(function () {
         var data = JSON.parse(data);
         
         if (data.response == true) {
+          $("#additionalContactInfoModalLabel").text("DIRECTORIO DE FAMILIA "+family_name);
           $("#conctactInfoDiv").html(data.html);
           Swal.close();
         } else {
@@ -834,7 +838,7 @@ function addContacts(id_family) {
   }
 }
 
-function updateContact(trusted_contact_id) {
+function updateContact(trusted_contact_id, id_family) {
   //--- CONTACTO ---//
   var form_data_contact_1 = document.querySelector('#form-contact-' + trusted_contact_id);
   var elements_contact_1 = form_data_contact_1.elements;
@@ -867,7 +871,7 @@ function updateContact(trusted_contact_id) {
   //--- --- ---//
   if (data_contact_1_complete) {
     
-      updateContactsDB(obj_contact_1, trusted_contact_id);
+      updateContactsDB(obj_contact_1, trusted_contact_id, id_family);
   }
   //--- --- ---//
 }
@@ -905,12 +909,14 @@ function saveContactsDB(obj_contact_1, id_family) {
       console.log(err);
   });
 }
-function updateContactsDB(obj_contact_1, trusted_contact_id) {
+function updateContactsDB(obj_contact_1, trusted_contact_id, id_family) {
   loading();
   const data = new FormData();
   data.append('mod', 'UpdateContacts');
   data.append('obj_contact_1', JSON.stringify(obj_contact_1));
   data.append('trusted_contact_id', trusted_contact_id);
+  data.append('id_family', id_family);
+  
   fetch('php/controllers/horarios_controller.php', {
       method: 'POST',
       body: data
