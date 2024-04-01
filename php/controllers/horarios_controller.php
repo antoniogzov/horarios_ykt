@@ -132,25 +132,9 @@ function getTrustedContactsFamily()
 
     $getInfoRequest = $queries->getData($stmt);
     //$last_id = $getInfoRequest['last_id'];
-    if (!empty($getInfoRequest)) {
-        $html = '';
-        for ($s = 0; $s < count($getInfoRequest); $s++) {
 
-            $html .= '<div class="card" id="card' . $getInfoRequest[$s]->trusted_contact_id . '">
-            <div class="card-body">
-              <h5 class="card-title">' . $getInfoRequest[$s]->contact_full_name . '</h5>
-              <h6 class="card-subtitle mb-2 text-body-secondary">' . $getInfoRequest[$s]->relationship . '</h6>
-              <p class="card-text">' . $getInfoRequest[$s]->family_address . '</p>
-              <a href="#" class="card-link">' . $getInfoRequest[$s]->cell_phone . '</a>
-              <br>
-              <button type="button" class="btn btn-sm btn-primary editContactInfo" data-id="' . $getInfoRequest[$s]->trusted_contact_id . '"><i class="fas fa-edit"></i></button>
-            </div>
-          </div><br>';
-        }
-        
-        if (count($getInfoRequest) < 4) {
-            # code...
-        }
+    $html = '';
+    if (count($getInfoRequest) == 0) {
         $html .= '<div class="card" id="newTrusted">
         <div class="card-body">
           <h5 class="card-title">Agregar contacto</h5>
@@ -158,20 +142,54 @@ function getTrustedContactsFamily()
           <button type="button" class="btn btn-sm btn-primary addNewTrusted" data-id="' . $id_family . '"><i class="fas fa-plus"></i></button>
         </div>
       </div><br>';
-        //--- --- ---//
-        $data = array(
-            'response' => true,
-            'html'                => $html
-        );
-        //--- --- ---//
+
+      $data = array(
+        'response' => true,
+        'html'                => $html
+    );
     } else {
-        //--- --- ---//
-        $data = array(
-            'response' => false,
-            'message'                => ''
-        );
-        //--- --- ---//
+        if (!empty($getInfoRequest)) {
+            $html = '';
+            for ($s = 0; $s < count($getInfoRequest); $s++) {
+
+                $html .= '<div class="card" id="card' . $getInfoRequest[$s]->trusted_contact_id . '">
+                <div class="card-body">
+                  <h5 class="card-title">' . $getInfoRequest[$s]->contact_full_name . '</h5>
+                  <h6 class="card-subtitle mb-2 text-body-secondary">' . $getInfoRequest[$s]->relationship . '</h6>
+                  <p class="card-text">' . $getInfoRequest[$s]->family_address . '</p>
+                  <a href="#" class="card-link">' . $getInfoRequest[$s]->cell_phone . '</a>
+                  <br>
+                  <button type="button" class="btn btn-sm btn-primary editContactInfo" data-id="' . $getInfoRequest[$s]->trusted_contact_id . '"><i class="fas fa-edit"></i></button>
+                </div>
+              </div><br>';
+            }
+
+            if (count($getInfoRequest) < 4) {
+                $html .= '<div class="card" id="newTrusted">
+            <div class="card-body">
+              <h5 class="card-title">Agregar contacto</h5>
+              <br>
+              <button type="button" class="btn btn-sm btn-primary addNewTrusted" data-id="' . $id_family . '"><i class="fas fa-plus"></i></button>
+            </div>
+          </div><br>';
+            }
+
+            //--- --- ---//
+            $data = array(
+                'response' => true,
+                'html'                => $html
+            );
+            //--- --- ---//
+        } else {
+            //--- --- ---//
+            $data = array(
+                'response' => false,
+                'message'                => ''
+            );
+            //--- --- ---//
+        }
     }
+
 
     echo json_encode($data);
 }
@@ -228,7 +246,7 @@ function getTrustedContactsFamilyForm()
         $html = '';
         for ($s = 0; $s < count($getInfoRequest); $s++) {
             $options = '';
-            
+
             $in_list = 0;
             for ($r = 0; $r < count($getInfoRequestRel); $r++) {
                 if (mb_strtoupper($getInfoRequestRel[$r]->relationship_description) == mb_strtoupper($getInfoRequest[$s]->relationship)) {
@@ -237,10 +255,9 @@ function getTrustedContactsFamilyForm()
                 } else {
                     if ($getInfoRequestRel[$r]->id_family_relationship == 11 && !$in_list) {
                         $options .= '<option selected value="' . mb_strtoupper($getInfoRequestRel[$r]->relationship_description) . '">' . mb_strtoupper($getInfoRequestRel[$r]->relationship_description) . '</option>';
-                    }else{
+                    } else {
                         $options .= '<option value="' . mb_strtoupper($getInfoRequestRel[$r]->relationship_description) . '">' . mb_strtoupper($getInfoRequestRel[$r]->relationship_description) . '</option>';
                     }
-                    
                 }
             }
             $manual_rel = '';
@@ -259,7 +276,7 @@ function getTrustedContactsFamilyForm()
             <div class="card-header">
                 <h3 class="mb-0">Contacto: ' . $getInfoRequest[$s]->contact_full_name . '</h3>
             </div>
-            <form id="form-contact-'.$id_contact.'" class="mb-3">
+            <form id="form-contact-' . $id_contact . '" class="mb-3">
                 <div class="form-group row mt-4">
                     <label class="col-md-2 col-form-label form-control-label">
                         * Nombre completo:
@@ -278,7 +295,7 @@ function getTrustedContactsFamilyForm()
                 ' . $options . '
                 </select>
                 </div>
-                '.$manual_rel.'
+                ' . $manual_rel . '
                 </div>
                 <br>
                 <div class="form-group row">
@@ -349,7 +366,7 @@ function getTrustedContactsFamilyForm()
             </div>
           </div><br>';
         }
-        
+
         //--- --- ---//
         $data = array(
             'response' => true,
@@ -374,7 +391,7 @@ function getNewTrustedContactsFamilyForm()
 
     $queries = new Queries;
 
-    
+
 
     $stmtFamilRel = "SELECT *
    FROM families_ykt.family_relationship";
@@ -384,12 +401,11 @@ function getNewTrustedContactsFamilyForm()
     $getInfoRequestRel = $queries->getData($stmtFamilRel);
     $html = '';
     //$last_id = $getInfoRequest['last_id'];
-        $options = '';
+    $options = '';
 
     if (!empty($getInfoRequestRel)) {
         for ($r = 0; $r < count($getInfoRequestRel); $r++) {
-            $options .= '<option value="' . mb_strtoupper($getInfoRequestRel[$r]->relationship_description) . '">' . mb_strtoupper($getInfoRequestRel[$r]->relationship_description) . '</option>';        
-            
+            $options .= '<option value="' . mb_strtoupper($getInfoRequestRel[$r]->relationship_description) . '">' . mb_strtoupper($getInfoRequestRel[$r]->relationship_description) . '</option>';
         }
 
         $html .= '<div class="card" id="cardNewTrusted">
@@ -482,11 +498,11 @@ function getNewTrustedContactsFamilyForm()
                     </div>
                 </div>
             </form>
-            <button type="button" class="btn btn-success col mt-4" onclick="addContacts('.$id_family.')">Guardar</button>
+            <button type="button" class="btn btn-success col mt-4" onclick="addContacts(' . $id_family . ')">Guardar</button>
         </div>
             </div>
           </div><br>';
-          
+
         //--- --- ---//
         $data = array(
             'response' => true,
@@ -506,94 +522,96 @@ function getNewTrustedContactsFamilyForm()
 }
 
 
-function SaveNewContacts() {
-	$data_contact_1 = json_decode($_POST['obj_contact_1']);
-	$id_family = $_POST['id_family'];
-
-	$response = true;
-
-    
-    $queries = new Queries;
-	//--- CONTACT 1 ---//
-	
-	$length_contact_1 = count((array)$data_contact_1);
-	$count_contact_1 = 0;
-
-	if($length_contact_1 > 0){
-		$arr_values_contact_1 = array($id_family);
-		$sql_contact_1 = 'INSERT INTO families_ykt.trusted_contacts (id_family, ';
-		$sql_values_contact_1 = 'VALUES (?, ';
-		foreach($data_contact_1 AS $key => $value){
-			$sql_contact_1 .= $key;
-			$sql_values_contact_1 .= '?';
-			if(($count_contact_1+1) < $length_contact_1){
-				$sql_contact_1 .= ', ';
-				$sql_values_contact_1 .= ', ';
-			}
-			array_push($arr_values_contact_1, $value);
-			$count_contact_1 ++;
-		}
-
-		$sql_contact_1 .= ')';
-		$sql_values_contact_1 .= ')';
-		$sql_contact_1 .= $sql_values_contact_1;
-
-		if(!Queries::getInstance()->updateInfo($sql_contact_1, $arr_values_contact_1)){
-			$response = false;
-		}
-	}
-	
-	//--- GENERAL DATA ---//
-	
-
-	if($response){
-		Queries::getInstance()->updateAdvance('secondary_contacts', $id_family);
-	}
-
-	$result = array('response' => $response);
-
-	echo json_encode($result);
-}
-
-function UpdateContacts() {
-	$data_contact = json_decode($_POST['obj_contact_1']);
-	$trusted_contact_id = $_POST['trusted_contact_id'];
+function SaveNewContacts()
+{
+    $data_contact_1 = json_decode($_POST['obj_contact_1']);
     $id_family = $_POST['id_family'];
 
-	$response = true;
+    $response = true;
+
+
     $queries = new Queries;
-	
-	//--- GENERAL DATA ---//
-	$length_data_general = count((array)$data_contact);
-	$count_data_general = 0;
+    //--- CONTACT 1 ---//
 
-	if($length_data_general > 0){
-		$arr_values_data_general = array();
-		$sql_data_general = 'UPDATE families_ykt.trusted_contacts SET ';
-		foreach($data_contact AS $key => $value){
-			$sql_data_general .= $key . ' = ? ';
-			if(($count_data_general+1) < $length_data_general){
-				$sql_data_general .= ', ';
-			}
-			array_push($arr_values_data_general, $value);
-			$count_data_general ++;
-		}
+    $length_contact_1 = count((array)$data_contact_1);
+    $count_contact_1 = 0;
 
-		$sql_data_general .= 'WHERE trusted_contact_id = ?';
-		array_push($arr_values_data_general, $trusted_contact_id);
+    if ($length_contact_1 > 0) {
+        $arr_values_contact_1 = array($id_family);
+        $sql_contact_1 = 'INSERT INTO families_ykt.trusted_contacts (id_family, ';
+        $sql_values_contact_1 = 'VALUES (?, ';
+        foreach ($data_contact_1 as $key => $value) {
+            $sql_contact_1 .= $key;
+            $sql_values_contact_1 .= '?';
+            if (($count_contact_1 + 1) < $length_contact_1) {
+                $sql_contact_1 .= ', ';
+                $sql_values_contact_1 .= ', ';
+            }
+            array_push($arr_values_contact_1, $value);
+            $count_contact_1++;
+        }
 
-		if(!Queries::getInstance()->updateInfo($sql_data_general, $arr_values_data_general)){
-			$response = false;
-		}
-	}
+        $sql_contact_1 .= ')';
+        $sql_values_contact_1 .= ')';
+        $sql_contact_1 .= $sql_values_contact_1;
 
-	if($response){
-		Queries::getInstance()->updateAdvance('secondary_contacts', $id_family);
-	}
+        if (!Queries::getInstance()->updateInfo($sql_contact_1, $arr_values_contact_1)) {
+            $response = false;
+        }
+    }
 
-	$result = array('response' => $response);
+    //--- GENERAL DATA ---//
 
-	echo json_encode($result);
+
+    if ($response) {
+        Queries::getInstance()->updateAdvance('secondary_contacts', $id_family);
+    }
+
+    $result = array('response' => $response);
+
+    echo json_encode($result);
+}
+
+function UpdateContacts()
+{
+    $data_contact = json_decode($_POST['obj_contact_1']);
+    $trusted_contact_id = $_POST['trusted_contact_id'];
+    $id_family = $_POST['id_family'];
+
+    $response = true;
+    $queries = new Queries;
+
+    //--- GENERAL DATA ---//
+    $length_data_general = count((array)$data_contact);
+    $count_data_general = 0;
+
+    if ($length_data_general > 0) {
+        $arr_values_data_general = array();
+        $sql_data_general = 'UPDATE families_ykt.trusted_contacts SET ';
+        foreach ($data_contact as $key => $value) {
+            $sql_data_general .= $key . ' = ? ';
+            if (($count_data_general + 1) < $length_data_general) {
+                $sql_data_general .= ', ';
+            }
+            array_push($arr_values_data_general, $value);
+            $count_data_general++;
+        }
+
+        $sql_data_general .= 'WHERE trusted_contact_id = ?';
+        array_push($arr_values_data_general, $trusted_contact_id);
+
+        if (!Queries::getInstance()->updateInfo($sql_data_general, $arr_values_data_general)) {
+            $response = false;
+        }
+    }
+
+    if ($response) {
+        Queries::getInstance()->updateAdvance('secondary_contacts', $id_family);
+    }
+
+    $result = array('response' => $response);
+
+    echo json_encode($result);
 }
 function getSchedulesByStudent()
 {
