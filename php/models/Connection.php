@@ -25,11 +25,11 @@ class data_conn
 
     private $db_conn; */
 
-    private $db_name = "families_ykt";
+    private $db_name = "iteach_grades_quantitatives";
     private $db_port = 3306;
-    private $db_user = "usuario";
-    private $db_pass = "UsuarioRemoto2020";
-    private $db_host = "servykt.homeip.net:3306";
+    private $db_user = "administrator";
+    private $db_pass = "Admon2024a*";
+    private $db_host = "database-ykt-1.c1uoa8yag1kb.us-west-1.rds.amazonaws.com";
     private $db_conn;
 
     public function dbConn()
