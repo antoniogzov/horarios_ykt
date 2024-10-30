@@ -28,7 +28,7 @@ class data_conn
     private $db_name = "iteach_grades_quantitatives";
     private $db_port = 3306;
     private $db_user = "administrator";
-    private $db_pass = "Admon2024a*";
+    private $db_pass = 'aZ9dH3!sV8xR2$kL7wG';
     private $db_host = "database-ykt-1.c1uoa8yag1kb.us-west-1.rds.amazonaws.com";
     private $db_conn;
 
