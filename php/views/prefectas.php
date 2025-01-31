@@ -58,7 +58,7 @@ $getAllColabs = $horarios->getAllColabs();
                     <h6 class="card-title mb-3">Seleccionar colaborador</h6>
                     <div class="row">
                         <div class="col-sm-12">
-                            <select class="js-example-basic-single form-select" id="select_colaborator" name="state">
+                            <select class="js-example-basic-single form-select" id="select_colaborator" style="width: 95%" name="state">
                                 <option disabled selected>**SELECCIONAR**</option>
                                 <?php foreach ($getAllColabs as $colab) : ?>
                                     <option value="<?= $colab->no_colaborador ?>"><?= $colab->colab_name ?></option>

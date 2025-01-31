@@ -62,7 +62,7 @@ class Horarios
         include_once('php/models/petitions.php');
         $queries = new Queries;
         $sql_sites = "SELECT DISTINCT colab.no_colaborador,
-        UPPER(CONCAT(colab.no_colaborador, ' | ', colab.nombres_colaborador, ' ', colab.apellido_paterno_colaborador ,' ', colab.apellido_materno_colaborador, ' | ', colab.correo_institucional)) AS colab_name,
+        UPPER(CONCAT(colab.no_colaborador, ' | ', colab.nombres_colaborador, ' ', colab.apellido_paterno_colaborador ,' ', colab.apellido_materno_colaborador)) AS colab_name,
         contrasena_general, correo_institucional
         FROM colaboradores_ykt.colaboradores AS colab
         LEFT JOIN colaboradores_ykt.relation_colaborator_ccostos AS rcc ON rcc.no_colaborador = colab.no_colaborador

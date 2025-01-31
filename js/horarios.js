@@ -803,6 +803,10 @@ $(document).ready(function () {
     value_before = grade;
     //--- --- ---//
   });
+
+  
+  $('#select_colaborator').select2();
+
 });
 
 function addContacts(id_family) {
