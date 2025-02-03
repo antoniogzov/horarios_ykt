@@ -1,6 +1,10 @@
 <?php
 include_once('php/models/horarios/horarios_model.php');
 
+use App\Models\EncryptionHandler; // O el namespace correcto
+require_once dirname(__FILE__, 4) . '/vendor/autoload.php';
+
+$encrypt = new EncryptionHandler();
 $horarios = new Horarios();
 
 
@@ -29,13 +33,14 @@ $getAllColabs = $horarios->getAllColabs();
                     </thead>
                     <tbody>
                         <?php foreach ($alList_ccos as $student) :
-
+                            $password_reversible = $student->atl_password;
+                            $password = $encrypt->decryptData($password_reversible);
                         ?>
                             <tr>
                                 <th title="<?= $student->no_colaborador ?>" style="background-color: #<?= $student->color_html ?> !important;" class="table-<?= $class_html ?>"><?= $student->no_colaborador ?></td>
                                 <th title="<?= $student->no_colaborador ?>" style="background-color: #<?= $student->color_html ?> !important;" class="table-<?= $class_html ?>"><?= $student->colab_name ?></td>
                                 <td style="background-color: #<?= $student->color_html ?> !important;" class="table-<?= $class_html ?>" scope="row"><?= $student->correo_institucional ?></td>
-                                <td style="background-color: #<?= $student->color_html ?> !important;" class="table-<?= $class_html ?>" scope="row"><?= $student->contrasena_general ?></td>
+                                <td style="background-color: #<?= $student->color_html ?> !important;" class="table-<?= $class_html ?>" scope="row"><?= $password ?></td>
                                 <td>
                                     <button class="btn btn-danger updateColab" data-no-colaborador="<?= $student->no_colaborador ?>" type="submit">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">

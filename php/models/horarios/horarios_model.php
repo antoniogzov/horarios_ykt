@@ -43,11 +43,12 @@ class Horarios
     {
         include_once('php/models/petitions.php');
         $queries = new Queries;
-        $sql_sites = "SELECT colab.no_colaborador, colab.no_colaborador, 
+        $sql_sites = "SELECT colab.no_colaborador, colab.no_colaborador, atl_password,
         CONCAT(colab.nombres_colaborador, ' ', colab.apellido_paterno_colaborador ,' ', colab.apellido_materno_colaborador) AS colab_name,
         contrasena_general, correo_institucional
         FROM colaboradores_ykt.colaboradores AS colab
         INNER JOIN colaboradores_ykt.relation_colaborator_ccostos AS rcc ON rcc.no_colaborador = colab.no_colaborador
+        inner join colaboradores_ykt.collaborator_access as cacc ON cacc.no_colaborador = colab.no_colaborador
         WHERE  colab.status = 1 AND rcc.routes_supervisor = 1
         ORDER BY colab_name  ASC";
 
@@ -61,11 +62,12 @@ class Horarios
     {
         include_once('php/models/petitions.php');
         $queries = new Queries;
-        $sql_sites = "SELECT DISTINCT colab.no_colaborador,
+        $sql_sites = "SELECT DISTINCT colab.no_colaborador, atl_password,
         UPPER(CONCAT(colab.no_colaborador, ' | ', colab.nombres_colaborador, ' ', colab.apellido_paterno_colaborador ,' ', colab.apellido_materno_colaborador)) AS colab_name,
         contrasena_general, correo_institucional
         FROM colaboradores_ykt.colaboradores AS colab
         LEFT JOIN colaboradores_ykt.relation_colaborator_ccostos AS rcc ON rcc.no_colaborador = colab.no_colaborador
+        inner join colaboradores_ykt.collaborator_access as cacc ON cacc.no_colaborador = colab.no_colaborador
         WHERE  colab.status = 1 AND rcc.routes_supervisor != 1 AND id_area_colaborador = 5
         ORDER BY colab_name  ASC";
 
